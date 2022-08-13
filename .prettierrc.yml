@@ -1,0 +1,6 @@
+bracketSameLine: true
+bracketSpacing: false
+printWidth: 80
+semi: false
+singleQuote: true
+tabWidth: 2

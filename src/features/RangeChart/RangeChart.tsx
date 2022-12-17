@@ -4,14 +4,31 @@ import styles from './RangeChart.css'
 
 type CardComboBoxProps = {
   combo: string
+  color: string
 }
 
-const CardComboBox: React.FC<CardComboBoxProps> = ({combo}) => {
-  return <div className={styles.cardComboBox}>{combo}</div>
+const CardComboBox: React.FC<CardComboBoxProps> = ({combo, color}) => {
+  const [backgroundColor, setBackgroundColor] = React.useState<string>(null)
+  const handleClick = () => {
+    if (backgroundColor) {
+      setBackgroundColor(null)
+      return
+    }
+    setBackgroundColor(color)
+  }
+  return (
+    <div className={styles.cardComboBox} style={{backgroundColor: backgroundColor}} onClick={handleClick}>
+      {combo}
+    </div>
+  )
 }
 
 export const RangeChart: React.FC = () => {
-  const cards = React.useMemo(() => ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2'], [])
+  const color = 'yellow'
+  const cards = React.useMemo(
+    () => ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2'],
+    []
+  )
 
   const combos = React.useMemo(() => {
     const combos = []
@@ -43,7 +60,7 @@ export const RangeChart: React.FC = () => {
       {combos.map((row: string[]) => (
         <div key={row[0]} className={styles.cardComboRow}>
           {row.map((combo: string) => (
-            <CardComboBox key={combo} combo={combo} />
+            <CardComboBox key={combo} combo={combo} color={color} />
           ))}
         </div>
       ))}

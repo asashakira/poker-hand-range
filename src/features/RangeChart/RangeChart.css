@@ -19,5 +19,9 @@
       cursor: default;
       user-select: none; /* might not work in some browsers */
     }
+
+    & .selected {
+      background-color: yellow;
+    }
   }
 }

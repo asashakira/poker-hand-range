@@ -5,19 +5,49 @@ import styles from './RangeChart.css'
 type CardComboBoxProps = {
   combo: string
   color: string
+  selecting: string | null
+  setSelecting: (selecting: 'select' | 'deselect' | null) => void
 }
 
-const CardComboBox: React.FC<CardComboBoxProps> = ({combo, color}) => {
+const CardComboBox: React.FC<CardComboBoxProps> = ({
+  combo,
+  color,
+  selecting,
+  setSelecting,
+}) => {
   const [backgroundColor, setBackgroundColor] = React.useState<string>(null)
-  const handleClick = () => {
+
+  const handleMouseDown = () => {
     if (backgroundColor) {
+      setSelecting('deselect')
       setBackgroundColor(null)
       return
     }
+    setSelecting('select')
     setBackgroundColor(color)
   }
+
+  const handleMouseUp = () => {
+    setSelecting(null)
+  }
+
+  const handleHighlight = () => {
+    if (!selecting) return
+    if (selecting === 'select') {
+      setBackgroundColor(color)
+    }
+    if (selecting === 'deselect') {
+      setBackgroundColor(null)
+    }
+  }
+
   return (
-    <div className={styles.cardComboBox} style={{backgroundColor: backgroundColor}} onClick={handleClick}>
+    <div
+      className={styles.cardComboBox}
+      style={{backgroundColor: backgroundColor}}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseOver={handleHighlight}>
       {combo}
     </div>
   )
@@ -55,12 +85,20 @@ export const RangeChart: React.FC = () => {
     return combos
   }, [cards])
 
+  const [selecting, setSelecting] = React.useState<'select' | 'deselect' | null>(null)
+
   return (
     <div className={styles.root}>
       {combos.map((row: string[]) => (
         <div key={row[0]} className={styles.cardComboRow}>
           {row.map((combo: string) => (
-            <CardComboBox key={combo} combo={combo} color={color} />
+            <CardComboBox
+              key={combo}
+              combo={combo}
+              color={color}
+              selecting={selecting}
+              setSelecting={setSelecting}
+            />
           ))}
         </div>
       ))}

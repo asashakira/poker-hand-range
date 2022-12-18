@@ -18,7 +18,7 @@ const CardComboBox: React.FC<CardComboBoxProps> = ({
   const [backgroundColor, setBackgroundColor] = React.useState<string>(null)
 
   const handleMouseDown = () => {
-    if (backgroundColor) {
+    if (backgroundColor === color) {
       setSelecting('deselect')
       setBackgroundColor(null)
       return
@@ -44,7 +44,7 @@ const CardComboBox: React.FC<CardComboBoxProps> = ({
   return (
     <div
       className={styles.cardComboBox}
-      style={{backgroundColor: backgroundColor}}
+      style={{backgroundColor: backgroundColor, color: backgroundColor ? 'white' : 'black'}}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseOver={handleHighlight}>
@@ -53,8 +53,31 @@ const CardComboBox: React.FC<CardComboBoxProps> = ({
   )
 }
 
+type ColorBoxProps = {
+  color: string
+  setColor: (color: string) => void
+}
+
+const ColorBox: React.FC<ColorBoxProps> = ({color, setColor}) => (
+  <div className={styles.colorBox} style={{backgroundColor: color}} onClick={() => setColor(color)} />
+)
+
+type ColorPickerProps = {
+  setColor: (color: string) => void
+}
+
+const ColorPicker: React.FC<ColorPickerProps> = ({setColor}) => {
+  return (
+    <div className={styles.colorPicker}>
+      <ColorBox color="red" setColor={setColor} />
+      <ColorBox color="blue" setColor={setColor} />
+      <ColorBox color="green" setColor={setColor} />
+      <ColorBox color="orange" setColor={setColor} />
+    </div>
+  )
+}
+
 export const RangeChart: React.FC = () => {
-  const color = 'yellow'
   const cards = React.useMemo(
     () => ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2'],
     []
@@ -87,6 +110,8 @@ export const RangeChart: React.FC = () => {
 
   const [selecting, setSelecting] = React.useState<'select' | 'deselect' | null>(null)
 
+  const [color, setColor] = React.useState('red')
+
   return (
     <div className={styles.root}>
       {combos.map((row: string[]) => (
@@ -102,6 +127,9 @@ export const RangeChart: React.FC = () => {
           ))}
         </div>
       ))}
+      <div>
+        <ColorPicker setColor={setColor} />
+      </div>
     </div>
   )
 }

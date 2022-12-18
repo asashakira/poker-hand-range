@@ -1,2 +1,1 @@
-# boiler-react
-Boilerplate for React JS
+# Poker Hand Range

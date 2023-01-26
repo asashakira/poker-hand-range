@@ -79,7 +79,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({setColor}) => {
 
 export const RangeChart: React.FC = () => {
   const cards = React.useMemo(
-    () => ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2'],
+    () => ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'],
     []
   )
 
